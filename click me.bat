@@ -1,0 +1,2 @@
+python NetAutoGen.py
+pause
