@@ -1,0 +1,172 @@
+﻿
+/*
+命名规则：
+1.以"ID_"开头的为协议号，使用关键字"Message";同时，
+	ID_PLAYER_TIMESTAMP(_RSP)：服务端的相应包以Rsp结尾，客户端发来的请求没有。
+
+2.没有"ID_"开头的为结构体，使用关键字"s t r u c t";
+	
+*/
+
+
+//////////////Player Timestamp Message///////////////
+message ID_PLAYER_TIMESTAMP
+{
+	uint32		userid;			//userid
+	compress uint32	timestamp;		//timestamp
+}
+
+message ID_PLAYER_TIMESTAMP_RSP
+{
+	compress uint32	timestamp;		//timestamp
+}
+
+//////////////Player move Message///////////////
+struct VectorXZ
+{
+	compress int32	x;			//player's position
+	compress int32	z;
+}
+
+struct PlayerBasicInfo
+{
+	uint32		userid;			//userid
+	VectorXZ	pos;
+	
+	compress int32	y;			//player's direction
+	
+	compress uint32	timestamp;		//timestamp
+}
+
+struct PlayerMoveInfo
+{
+	uint32		userid;			//userid
+	VectorXZ	pos;
+	
+	compress int32	y;			//player's direction
+	
+	compress uint8	speed;			//speed:0-255
+	compress uint32	timestamp;		//timestamp
+}
+
+message ID_PLAYER_POS
+{
+	compress uint32	instanceID;		//instanceID
+	PlayerMoveInfo	playerMoveInfo;		//info of player move
+}
+
+
+message ID_PLAYER_POS_RSP
+{
+	repeat PlayerMoveInfo playerMoveInfos;	//infos of players
+}
+
+//////////////Player EnterRoom Message///////////////
+message ID_PLAYER_ENTERROOM
+{
+	compress uint32	instanceID;		//
+	PlayerBasicInfo	playerInfo;		//info of player enter room
+}
+
+message ID_PLAYER_ENTERROOM_RSP
+{
+	repeat PlayerBasicInfo playerInfos;	//infos of players
+}
+
+//////////////Player Attack Message///////////////
+message ID_PLAYER_ATTACK
+{
+	compress uint32	instanceID;		//
+	PlayerBasicInfo	playerInfo;		//
+}
+
+message ID_PLAYER_ATTACK_RSP
+{
+	repeat PlayerBasicInfo playerInfos;		//
+}
+
+//////////////Player Exit Instance///////////////
+message ID_PLAYER_EXIT_INSTANCE
+{
+	uint32 			userid;		//userid
+	compress uint32	instanceID;	//
+}
+
+message ID_PLAYER_EXIT_INSTANCE_RSP
+{
+	compress uint32	userID;
+}
+
+//////////////Player Disconnect Message///////////////
+message ID_PLAYER_DISCONNECT
+{
+	uint32		userid;		//
+	compress uint32	instanceID;	//副本ID，如果没有在，则赋值0xFFFFFFFF
+	compress uint16	roomID;		//房间ID，如果没有在房间里面赋值0xFFFF
+}
+
+//////////////Player Hurt Message///////////////
+struct PlayerHurtInfo
+{
+	compress uint32	attackUserID;	//攻击者ID
+	compress uint32	defendUserID;	//被攻击者ID
+	compress uint16	hurtValue;	//伤害数值
+	compress uint32	timestamp;		//
+}
+message ID_PLAYER_HURT
+{
+	compress uint32	instanceID;		//副本ID 
+	PlayerHurtInfo	playerHurtInfo;	//
+}
+
+message ID_PLAYER_HURT_RSP
+{
+	repeat PlayerHurtInfo	playerHurtInfos;	//
+}
+
+//////////////Player Dead Message///////////////
+message ID_PLAYER_DEAD
+{
+	uint32			userid;		//
+	compress uint32	instanceID;	//
+	compress uint32	timestamp;	//
+}
+
+message ID_PLAYER_DEAD_RSP
+{
+	compress uint32 userID;		//
+	compress uint32	timestamp;	//
+}
+
+//////////////Player Revive Message///////////////
+message ID_PLAYER_REVIVE
+{
+	uint32			userid;		//
+	compress uint32	instanceID;	//
+	compress uint32	timestamp;	//
+}
+
+message ID_PLAYER_REVIVE_RSP
+{
+	compress uint32 userID;		//
+	compress uint32	timestamp;	//
+}
+
+//////////////Player GetUserid Message///////////////
+message ID_PLAYER_GET_USERID
+{
+	compress uint32 channelUserid;	//
+	compress uint8	channelID;		//
+}
+
+message ID_PLAYER_GET_USERID_RSP
+{
+	compress uint32	userID;		//
+	compress uint8	svrID;		//
+	compress uint8	type;		
+}
+
+
+
+
+
